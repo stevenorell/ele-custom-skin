@@ -83,6 +83,21 @@ class Skin_Posts_ECS extends Skin_Base {
 				'prefix_class' => 'elementor-posts--thumbnail-',
 			]
 		);
+
+    $this->add_control(
+			'remove_post_id',
+			[
+				'label' => __( 'Remove post IDs?', 'ele-custom-skin' ),
+        'description' => __( 'If this loop includes posts that may be shown elsewhere on the page, remove the ID to avoid duplicate ID errors.', 'ele-custom-skin' ),
+				'type' => \Elementor\Controls_Manager::SWITCHER,
+				'label_off' => __( 'No', 'ele-custom-skin' ),
+				'label_on' => __( 'Yes', 'ele-custom-skin' ),
+        'return_value' => 'yes',
+        'separator' => 'before',
+				'default' =>'',
+
+			]
+		);
     
     $this->add_control(
 			'use_custom_grid',
@@ -285,19 +300,26 @@ class Skin_Posts_ECS extends Skin_Base {
 
 	protected function render_post_header() {
     $classes = 'elementor-post elementor-grid-item ecs-post-loop';
-     $parent_settings = $this->parent->get_settings();
+    $classes.= 'post-' . get_the_ID();
+    $parent_settings = $this->parent->get_settings();
     $parent_settings[$this->get_id().'_post_slider'] = isset($parent_settings[$this->get_id().'_post_slider'])? $parent_settings[$this->get_id().'_post_slider'] : "";
      if($parent_settings[$this->get_id().'_post_slider'] == "yes") $classes .= ' swiper-slide';
      if ($this->grid_settings['allow']) {
         echo $this->get_grid();
-        ?>
-		<div id="post-<?php the_ID(); ?>" <?php post_class( [ $classes ] ); ?>>
-		<?php
-    }
-    else {
-    ?>
-		<article id="post-<?php the_ID(); ?>" <?php post_class( [ $classes ] ); ?>>
-		<?php
+        
+        echo '<div ';
+        if($parent_settings[$this->get_id().'_remove_post_id'] != "yes") {
+          echo 'id="post-' . get_the_ID() . '" ';
+        }
+        post_class( [ $classes ] );
+        echo '>';
+    } else {
+      echo '<article ';
+        if($parent_settings[$this->get_id().'_remove_post_id'] != "yes") {
+          echo 'id="post-' . get_the_ID() . '" ';
+        }
+        post_class( [ $classes ] );
+        echo '>';
     }
 	}
   

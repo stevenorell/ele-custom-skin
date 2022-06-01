@@ -59,7 +59,7 @@ function ECS_set_dynamic_style( \Elementor\Element_Base $element ) {
   $settings = $element->parse_dynamic_settings( $dynamic_settings, $controls); // @ <- dirty fix for that fugly controls-stack.php  Illegal string offset 'url' error
 
   $ECS_css="";
-  $element_wrapper="#post-{$PostID} .elementor-{$LoopID} .elementor-element.elementor-element-{$ElementID}";
+  $element_wrapper=".post-{$PostID} .elementor-{$LoopID} .elementor-element.elementor-element-{$ElementID}";
   
   foreach($controls as $key => $control){
     if(isset($control["selectors"])){
