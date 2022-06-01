@@ -300,9 +300,9 @@ class Skin_Posts_ECS extends Skin_Base {
 
 	protected function render_post_header() {
     $classes = 'elementor-post elementor-grid-item ecs-post-loop';
-    $classes.= 'post-' . get_the_ID();
     $parent_settings = $this->parent->get_settings();
     $parent_settings[$this->get_id().'_post_slider'] = isset($parent_settings[$this->get_id().'_post_slider'])? $parent_settings[$this->get_id().'_post_slider'] : "";
+    $parent_settings[$this->get_id().'_remove_post_id'] = isset($parent_settings[$this->get_id().'_remove_post_id'])? $parent_settings[$this->get_id().'_remove_post_id'] : "";
      if($parent_settings[$this->get_id().'_post_slider'] == "yes") $classes .= ' swiper-slide';
      if ($this->grid_settings['allow']) {
         echo $this->get_grid();
