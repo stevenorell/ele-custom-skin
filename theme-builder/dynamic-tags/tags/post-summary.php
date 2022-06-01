@@ -26,7 +26,7 @@ class Post_Summary extends Tag {
 		return [ Module::TEXT_CATEGORY ];
 	}
   
-  protected function _register_controls() {
+  protected function register_controls() {
     $this->add_control(
       'length',
       [
@@ -43,6 +43,21 @@ class Post_Summary extends Tag {
 	public function render() {
     add_filter( 'excerpt_more',function(){return '';}, 20 );
     add_filter( 'excerpt_length', function(){$settings = $this->get_settings(); return $settings['length'];}, 20 ); 
-		echo get_the_excerpt();
+		echo  $this->excerpt();
 	}
+  
+  public function excerpt() {
+    $settings = $this->get_settings();
+    $limit =  $settings['length'];
+    $excerpt = explode(' ',get_the_excerpt(), $limit);
+    if (count($excerpt)>=$limit) {
+      array_pop($excerpt);
+      $excerpt = implode(" ",$excerpt);
+    } else {
+      $excerpt = implode(" ",$excerpt);
+    }
+    $excerpt = preg_replace('`[[^]]*]`','',$excerpt);
+    return $excerpt;
+  }
+    
 }
